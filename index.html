@@ -183,78 +183,122 @@
         </div>
     </dialog>
 
-    <script>
-        const prompts = [
-            { title: 'Penyusun RPP Merdeka', cat: 'Pendidikan', desc: 'Membuat RPP lengkap berdasarkan Capaian Pembelajaran terbaru.', text: 'Anda adalah pakar Kurikulum Merdeka. Buatkan Modul Ajar lengkap untuk materi [Materi] kelas [Kelas] dengan metode Problem Based Learning.' },
-            { title: 'Copywriting Produk UMKM', cat: 'Bisnis', desc: 'Headline dan deskripsi produk yang menghipnotis pembeli.', text: 'Tuliskan deskripsi produk yang persuasif menggunakan framework AIDA untuk produk [Nama Produk] yang target audiensnya adalah [Target].' },
-            { title: 'Editor Naskah Jurnalistik', cat: 'Kreatif', desc: 'Mengubah tulisan mentah menjadi berita standar media besar.', text: 'Edit teks berikut agar sesuai dengan Pedoman Umum Ejaan Bahasa Indonesia (PUEBI) dan memiliki gaya penulisan berita Feature.' },
-            { title: 'Optimasi Kode Python', cat: 'Teknologi', desc: 'Mencari bug dan mengoptimalkan performa fungsi Python.', text: 'Analisis kode Python berikut, temukan potensi bottleneck, dan berikan versi yang lebih efisien.' },
-            { title: 'Strategi Kampanye Politik AI', cat: 'Bisnis', desc: 'Pemetaan sentimen dan strategi narasi di media sosial.', text: 'Buatkan kerangka strategi komunikasi digital untuk meningkatkan awareness isu [Isu] bagi demografi Gen Z.' },
-            { title: 'Prompt Stable Diffusion XL', cat: 'Kreatif', desc: 'Membangun visual photorealistic kualitas tinggi.', text: 'Cinematic lighting, masterpiece, ultra-detailed, 8k, bokeh, portrait of [Object], sharp focus, depth of field.' }
-        ];
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        const gallery = document.getElementById('gallery');
-        const search = document.getElementById('search');
-        const filter = document.getElementById('filter');
-        const detail = document.getElementById('detail');
+<script>
+    // KONFIGURASI SUPABASE (Ganti dengan milik Anda)
+    const SUPABASE_URL = 'https://slbgyblovhdxhqrslgcj.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_8pgNFalyt0w_3SWOQ3UGMA_2Y0EmcTS';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function render() {
-            gallery.innerHTML = '';
-            const q = search.value.toLowerCase();
-            const f = filter.value;
-            
-            const filtered = prompts.filter(p => 
-                (!f || p.cat === f) && 
-                (p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
-            );
+    let allPrompts = []; // Penampung data dari database
 
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prompt-card rounded-3xl p-6 flex flex-col justify-between';
-                card.innerHTML = `
-                    <div>
-                        <span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full uppercase border border-sky-500/20">${p.cat}</span>
-                        <h3 class="text-xl font-bold mt-4 mb-2">${p.title}</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6">${p.desc}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="openDetail('${p.title}')" class="flex-grow bg-slate-800 hover:bg-slate-700 text-sm font-semibold py-2.5 rounded-xl transition">Detail</button>
-                        <button onclick="quickCopy(event, '${p.text.replace(/'/g, "\\'")}')" class="px-4 py-2.5 bg-sky-500/10 hover:bg-sky-500 text-sky-400 rounded-xl transition">
-                            📋
-                        </button>
-                    </div>
-                `;
-                gallery.appendChild(card);
-            });
+    const gallery = document.getElementById('gallery');
+    const search = document.getElementById('search');
+    const filter = document.getElementById('filter');
+    const detail = document.getElementById('detail');
+
+    // Ambil Data dari Supabase
+    async function fetchPrompts() {
+        gallery.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Memuat database prompt...</div>';
+        
+        const { data, error } = await supabase
+            .from('prompts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error:', error);
+            gallery.innerHTML = '<div class="col-span-full text-center text-red-400">Gagal memuat data. Periksa koneksi/API Key.</div>';
+            return;
         }
 
-        function openDetail(title) {
-            const p = prompts.find(x => x.title === title);
-            document.getElementById('d-title').textContent = p.title;
-            document.getElementById('d-cat').textContent = p.cat;
-            document.getElementById('d-desc').textContent = p.desc;
-            document.getElementById('d-text').value = p.text;
-            detail.showModal();
+        allPrompts = data;
+        render(allPrompts);
+    }
+
+    function render(dataToRender) {
+        gallery.innerHTML = '';
+        const q = search.value.toLowerCase();
+        const f = filter.value;
+        
+        const filtered = dataToRender.filter(p => 
+            (!f || p.cat === f) && 
+            (p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
+        );
+
+        if (filtered.length === 0) {
+            gallery.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">Prompt tidak ditemukan.</div>';
+            return;
         }
 
-        function quickCopy(e, text) {
-            navigator.clipboard.writeText(text);
-            const btn = e.currentTarget;
-            const original = btn.innerHTML;
-            btn.innerHTML = '✅';
-            setTimeout(() => btn.innerHTML = original, 2000);
-        }
+        filtered.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'prompt-card rounded-3xl p-6 flex flex-col justify-between';
+            card.innerHTML = `
+                <div>
+                    <span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full uppercase border border-sky-500/20">${p.cat}</span>
+                    <h3 class="text-xl font-bold mt-4 mb-2">${p.title}</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">${p.description}</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openDetail('${p.id}')" class="flex-grow bg-slate-800 hover:bg-slate-700 text-sm font-semibold py-2.5 rounded-xl transition">Detail</button>
+                    <button onclick="quickCopy(event, \`${p.body.replace(/`/g, "\\`")}\`)" class="px-4 py-2.5 bg-sky-500/10 hover:bg-sky-500 text-sky-400 rounded-xl transition">
+                        📋
+                    </button>
+                </div>
+            `;
+            gallery.appendChild(card);
+        });
+    }
 
-        function copyFromModal() {
-            const txt = document.getElementById('d-text');
-            navigator.clipboard.writeText(txt.value);
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = '✅ Tersalin!';
-            setTimeout(() => btn.innerText = 'Copy Prompt', 2000);
-        }
+    function openDetail(id) {
+        const p = allPrompts.find(x => x.id === id);
+        document.getElementById('d-title').textContent = p.title;
+        document.getElementById('d-cat').textContent = p.cat;
+        document.getElementById('d-desc').textContent = p.description;
+        document.getElementById('d-text').value = p.body;
+        detail.showModal();
+    }
 
-        search.oninput = filter.onchange = render;
-        render();
-    </script>
+    function quickCopy(e, text) {
+        navigator.clipboard.writeText(text);
+        const btn = e.currentTarget;
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅';
+        btn.classList.add('bg-sky-500', 'text-slate-900');
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('bg-sky-500', 'text-slate-900');
+        }, 2000);
+    }
+
+    function copyFromModal() {
+        const txt = document.getElementById('d-text');
+        navigator.clipboard.writeText(txt.value);
+        const btn = document.getElementById('copyBtn');
+        const original = btn.innerText;
+        btn.innerText = '✅ Tersalin!';
+        btn.style.background = '#22c55e';
+        setTimeout(() => {
+            btn.innerText = original;
+            btn.style.background = '';
+        }, 2000);
+    }
+
+    // Listener Real-time (Otomatis Update tanpa Refresh jika data di Supabase berubah)
+    const mySubscription = supabase
+        .channel('public:prompts')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'prompts' }, payload => {
+            fetchPrompts(); // Refresh data jika ada perubahan di DB
+        })
+        .subscribe();
+
+    search.oninput = () => render(allPrompts);
+    filter.onchange = () => render(allPrompts);
+    
+    // Inisialisasi Ambil Data
+    fetchPrompts();
+</script>
 </body>
 </html>
