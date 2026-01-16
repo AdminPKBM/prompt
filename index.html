@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Kang Ruli | Galeri Prompt AI</title>
+  <meta name="description" content="Galeri prompt siap pakai untuk ChatGPT dan Midjourney. Lengkap dengan pencarian, filter, copy prompt, dan blog SEO literasi AI." />
+  <meta name="keywords" content="prompt chatgpt, prompt midjourney, galeri prompt ai, belajar ai, literasi ai" />
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4454451699877502" crossorigin="anonymous"></script>
+
+  <style>
+    :root{--bg:#020617;--card:#111827;--text:#e5e7eb;--muted:#9ca3af;--accent:#38bdf8;--success:#22c55e}
+    *{box-sizing:border-box; transition: all 0.2s ease;}
+    body{margin:0;font-family: 'Plus Jakarta Sans', system-ui,sans-serif;background:var(--bg);color:var(--text); line-height: 1.6;}
+    header,main,footer{max-width:1100px;margin:auto;padding:1.5rem}
+    header{text-align:center;padding-top:4rem; padding-bottom: 2rem;}
+    h1{font-size:clamp(2.5rem,6vw,3.5rem);margin:.5rem 0; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;}
+    
+    .search-bar{display:flex; flex-wrap: wrap; gap:1rem; justify-content:center; margin:2rem 0; background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);}
+    input,select,button{padding:.8rem 1.2rem; border-radius:12px; border:1px solid #334155; font-size:.9rem; outline: none;}
+    input,select{background: #0f172a; color: white; flex: 1; min-width: 250px;}
+    input:focus{border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56,189,248,0.2);}
+    button{background:var(--accent);color:#020617;font-weight:700;cursor:pointer; border: none;}
+    button:hover{transform: translateY(-2px); opacity: 0.9;}
+    button.secondary {background: rgba(255,255,255,0.1); color: white;}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+    .card{background: var(--card); border: 1px solid #1f2937; border-radius:20px; padding:1.5rem; display:flex; flex-direction:column; gap:.8rem; position: relative; overflow: hidden;}
+    .card:hover{border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+    .tag{display:inline-block;background:rgba(56,189,248,0.1);color:var(--accent);padding:.3rem .8rem;border-radius:999px;font-size:.75rem;font-weight: 600; width: fit-content;}
+    h3{margin: 0.5rem 0; font-size: 1.25rem;}
+    .card p{color: var(--muted); font-size: 0.9rem; margin: 0;}
+    .actions{display:flex;gap:.6rem;margin-top:1.5rem}
+    
+    /* Blog Style */
+    .blog-section {background: rgba(255,255,255,0.02); padding: 3rem 1.5rem; border-radius: 30px; border: 1px dashed #334155;}
+    .blog-list {list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;}
+    .blog-list li {background: #0f172a; padding: 1rem; border-radius: 12px; border-left: 4px solid var(--accent);}
+    .blog-list a {text-decoration: none; color: var(--text); font-weight: 500;}
+    .blog-list a:hover {color: var(--accent);}
+
+    footer{margin-top: 5rem; padding: 3rem; text-align:center; border-top:1px solid #1f2937; color:var(--muted); font-size:.9rem}
+    
+    dialog{background: #111827; color: white; border: 1px solid #334155; border-radius:24px; padding:2rem; width: 90%; max-width:600px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);}
+    dialog h3 {font-size: 1.5rem; margin-top: 0;}
+    textarea{width:100%; min-height:150px; background: #020617; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; padding: 1rem; font-family: monospace; margin: 1rem 0;}
+    
+    .ad-slot { margin: 2rem 0; text-align: center; background: rgba(0,0,0,0.2); border-radius: 12px; min-height: 90px; display: flex; align-items: center; justify-content: center;}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="tag" style="margin-bottom: 1rem;">v1.0 Beta</div>
+  <h1>Prompt Kang Ruli</h1>
+  <p>Perpustakaan instruksi AI untuk meningkatkan produktivitas dan kreativitas Anda.</p>
+</header>
+
+<main>
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4454451699877502" data-ad-slot="auto" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="search-bar">
+    <input id="search" placeholder="🔍 Cari topik atau kata kunci prompt..." />
+    <select id="filter">
+      <option value="">Semua Kategori</option>
+      <option>Pendidikan</option>
+      <option>Jurnalistik</option>
+      <option>UMKM</option>
+      <option>Desain</option>
+      <option>Guru</option>
+      <option>Santri</option>
+    </select>
+  </div>
+
+  <section class="grid" id="gallery"></section>
+
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4454451699877502" data-ad-slot="auto" data-ad-format="rectangle" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <section class="blog-section" style="margin-top:4rem">
+    <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">📚 Literasi AI & Panduan</h2>
+    <p style="color: var(--muted); margin-bottom: 2rem;">Pelajari cara berkomunikasi dengan AI secara efektif melalui artikel kurasi kami.</p>
+    <ul class="blog-list">
+      <li><a href="#">🚀 Apa itu Prompt Engineering untuk Pemula?</a></li>
+      <li><a href="#">🎓 Implementasi ChatGPT dalam Kurikulum Merdeka</a></li>
+      <li><a href="#">🏪 Strategi AI untuk Digitalisasi UMKM Desa</a></li>
+      <li><a href="#">🛡️ Etika & Adab Menggunakan AI bagi Santri</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <p>Built with ❤️ by <b>kangruli.web.id</b> · © 2026</p>
+  <p style="font-size: 0.7rem; margin-top: 1rem; opacity: 0.5;">Prompt yang tersedia di sini bersifat sumber terbuka (Open Source).</p>
+</footer>
+
+<dialog id="detail">
+  <h3 id="d-title"></h3>
+  <p id="d-desc" style="color: var(--muted); font-size: 0.9rem;"></p>
+  <textarea id="d-text" readonly></textarea>
+  <div class="actions">
+    <button id="copyBtn" onclick="copyFromModal()" style="flex: 2;">Copy Prompt</button>
+    <button onclick="detail.close()" class="secondary" style="flex: 1;">Tutup</button>
+  </div>
+</dialog>
+
+<script>
+const prompts=[
+ {title:'RPP & Modul Ajar AI',cat:'Pendidikan',desc:'Buat modul ajar lengkap otomatis.',text:'Bertindaklah sebagai guru profesional. Buatkan modul ajar lengkap dengan tujuan, asesmen, dan aktivitas untuk materi [ISI MATERI] kelas [ISI KELAS].'},
+ {title:'Artikel Opini Media',cat:'Jurnalistik',desc:'Draft opini tajam & terstruktur.',text:'Tulis artikel opini kritis sepanjang 800 kata tentang isu [ISU] dengan gaya bahasa jurnalistik media nasional.'},
+ {title:'Strategi Konten UMKM',cat:'UMKM',desc:'30 hari ide konten promosi.',text:'Jadilah social media manager. Buatkan tabel konten harian selama 30 hari untuk bisnis [JENIS BISNIS] yang fokus pada engagement.'},
+ {title:'Prompt Foto Realistik',cat:'Desain',desc:'Visual Midjourney v6.',text:'Cinematic shot, hyper-realistic, 8k resolution, shot on 35mm lens, natural lighting, [DETAIL OBJEK], highly detailed texture.'},
+ {title:'Analisis Silabus Guru',cat:'Guru',desc:'Ringkas materi pelajaran.',text:'Bantu saya menyusun ringkasan materi dari silabus ini agar mudah dipahami oleh siswa usia SMP.'},
+ {title:'Kajian Tematik AI',cat:'Santri',desc:'AI pembantu riset kitab.',text:'Bantu saya mencari referensi ayat atau hadis yang berkaitan dengan tema [TEMA] untuk bahan presentasi kajian.'}
+];
+
+const gallery=document.getElementById('gallery');
+const search=document.getElementById('search');
+const filter=document.getElementById('filter');
+const detail=document.getElementById('detail');
+
+function render(){
+ gallery.innerHTML='';
+ const q=search.value.toLowerCase();
+ const f=filter.value;
+ prompts.filter(p=>(!f||p.cat===f)&&(p.title.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)))
+ .forEach(p=>{
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<span class=tag>${p.cat}</span><h3>${p.title}</h3><p>${p.desc}</p>`;
+  const a=document.createElement('div');a.className='actions';
+  a.innerHTML=`<button class="secondary">Detail</button><button>Copy</button>`;
+  a.children[0].onclick=()=>openDetail(p);
+  a.children[1].onclick=(e)=>quickCopy(e, p.text);
+  c.appendChild(a);gallery.appendChild(c);
+ });
+}
+
+function openDetail(p){
+ document.getElementById('d-title').textContent=p.title;
+ document.getElementById('d-desc').textContent=p.desc;
+ document.getElementById('d-text').value=p.text;
+ detail.showModal();
+}
+
+function quickCopy(e, text){
+ navigator.clipboard.writeText(text);
+ const originalText = e.target.innerText;
+ e.target.innerText = '✅ Copied!';
+ e.target.style.background = '#22c55e';
+ setTimeout(()=>{
+  e.target.innerText = originalText;
+  e.target.style.background = '';
+ }, 2000);
+}
+
+function copyFromModal(){
+ const txt = document.getElementById('d-text');
+ navigator.clipboard.writeText(txt.value);
+ const btn = document.getElementById('copyBtn');
+ btn.innerText = '✅ Tersalin ke Clipboard!';
+ btn.style.background = '#22c55e';
+ setTimeout(()=>{
+  btn.innerText = 'Copy Prompt';
+  btn.style.background = '';
+ }, 2000);
+}
+
+search.oninput=filter.onchange=render;render();
+</script>
+</body>
+</html>
