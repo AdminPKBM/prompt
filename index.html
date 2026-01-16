@@ -1,150 +1,117 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Kang Ruli | Galeri Prompt AI Profesional</title>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4454451699877502" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        :root { --accent: #38bdf8; --bg-dark: #020617; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #f1f5f9; }
-        .prompt-card { background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .prompt-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.2); }
-        .ad-wrapper { margin: 2rem 0; padding: 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; text-align: center; min-height: 100px; }
-        dialog::backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); }
-    </style>
-</head>
-<body class="overflow-x-hidden">
+<script>
+    // KONFIGURASI SUPABASE (Ganti dengan milik Anda)
+    const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+    const SUPABASE_KEY = 'YOUR_ANON_KEY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    <nav class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-slate-900">K</div>
-                <span class="text-xl font-extrabold">Prompt<span class="text-sky-400">Ruli</span></span>
-            </div>
-            <a href="https://kangruli.web.id" class="text-xs bg-slate-800 px-4 py-2 rounded-full border border-slate-700 hover:bg-slate-700">Main Web</a>
-        </div>
-    </nav>
+    let allPrompts = []; // Penampung data dari database
 
-    <header class="pt-16 pb-8 px-6 text-center">
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tighter">Koleksi <span class="text-sky-400">Prompt AI</span></h1>
-        <p class="text-slate-400 max-w-2xl mx-auto">Database instruksi cerdas untuk ChatGPT & Midjourney oleh Kang Ruli.</p>
-    </header>
+    const gallery = document.getElementById('gallery');
+    const search = document.getElementById('search');
+    const filter = document.getElementById('filter');
+    const detail = document.getElementById('detail');
 
-    <main class="max-w-7xl mx-auto px-6">
+    // Ambil Data dari Supabase
+    async function fetchPrompts() {
+        gallery.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500 animate-pulse">Memuat database prompt...</div>';
         
-        <div class="ad-wrapper">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4454451699877502" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
+        const { data, error } = await supabase
+            .from('prompts')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-        <div class="flex flex-col md:flex-row gap-4 mb-10">
-            <input id="search" type="text" placeholder="Cari prompt..." class="flex-grow bg-slate-900 border border-slate-800 rounded-xl py-3 px-5 outline-none focus:border-sky-500 transition">
-            <select id="filter" class="bg-slate-900 border border-slate-800 rounded-xl py-3 px-5 outline-none focus:border-sky-500">
-                <option value="">Semua Sektor</option>
-                <option value="Pendidikan">Pendidikan</option>
-                <option value="Bisnis">Bisnis</option>
-                <option value="Kreatif">Kreatif</option>
-                <option value="Teknologi">Teknologi</option>
-            </select>
-        </div>
-
-        <div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="col-span-full text-center py-20 text-slate-500">Menghubungkan ke database...</div>
-        </div>
-
-        <div class="ad-wrapper mt-10">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4454451699877502" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-    </main>
-
-    <footer class="py-12 text-center text-slate-600 text-sm">
-        © 2026 prompt.kangruli.web.id · Powered by Supabase
-    </footer>
-
-    <dialog id="detail" class="bg-slate-900 text-slate-100 p-8 rounded-3xl border border-slate-800 w-[90%] max-w-2xl">
-        <div class="flex justify-between items-start mb-4">
-            <h3 id="d-title" class="text-2xl font-bold"></h3>
-            <button onclick="detail.close()" class="text-slate-500 hover:text-white text-2xl">&times;</button>
-        </div>
-        <textarea id="d-text" readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sky-400 font-mono text-sm min-h-[200px] mb-6 outline-none"></textarea>
-        <button id="copyBtn" onclick="copyFromModal()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 rounded-xl transition">Copy Prompt</button>
-    </dialog>
-
-    <script>
-        // MASUKKAN URL & KEY ANDA DI SINI
-        const SUPABASE_URL = 'https://DAPATKAN_DI_DASHBOARD.supabase.co';
-        const SUPABASE_KEY = 'DAPATKAN_DI_DASHBOARD_ANON_KEY';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        let allPrompts = [];
-
-        async function fetchPrompts() {
-            const { data, error } = await supabaseClient.from('prompts').select('*').order('created_at', { ascending: false });
-            if (error) {
-                document.getElementById('gallery').innerHTML = '<div class="col-span-full text-red-400">Gagal memuat data. Periksa API Key & RLS.</div>';
-                return;
-            }
-            allPrompts = data;
-            render();
+        if (error) {
+            console.error('Error:', error);
+            gallery.innerHTML = '<div class="col-span-full text-center text-red-400">Gagal memuat data. Periksa koneksi/API Key.</div>';
+            return;
         }
 
-        function render() {
-            const gallery = document.getElementById('gallery');
-            const q = document.getElementById('search').value.toLowerCase();
-            const f = document.getElementById('filter').value;
-            
-            const filtered = allPrompts.filter(p => (!f || p.cat === f) && (p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)));
-            
-            gallery.innerHTML = filtered.length ? '' : '<div class="col-span-full text-center py-10 text-slate-600">Tidak ada prompt ditemukan.</div>';
+        allPrompts = data;
+        render(allPrompts);
+    }
 
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prompt-card rounded-2xl p-6 flex flex-col justify-between';
-                card.innerHTML = `
-                    <div>
-                        <span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-2 py-1 rounded uppercase">${p.cat}</span>
-                        <h3 class="text-xl font-bold mt-3 mb-2">${p.title}</h3>
-                        <p class="text-slate-400 text-sm mb-6">${p.description}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="openDetail('${p.id}')" class="flex-grow bg-slate-800 hover:bg-slate-700 text-sm font-semibold py-2 rounded-lg">Detail</button>
-                        <button onclick="quickCopy(event, \`${p.body.replace(/`/g, "\\`")}\`)" class="px-4 py-2 bg-sky-500/10 hover:bg-sky-500 text-sky-400 rounded-lg transition">📋</button>
-                    </div>`;
-                gallery.appendChild(card);
-            });
+    function render(dataToRender) {
+        gallery.innerHTML = '';
+        const q = search.value.toLowerCase();
+        const f = filter.value;
+        
+        const filtered = dataToRender.filter(p => 
+            (!f || p.cat === f) && 
+            (p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
+        );
+
+        if (filtered.length === 0) {
+            gallery.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">Prompt tidak ditemukan.</div>';
+            return;
         }
 
-        function openDetail(id) {
-            const p = allPrompts.find(x => x.id === id);
-            document.getElementById('d-title').innerText = p.title;
-            document.getElementById('d-text').value = p.body;
-            document.getElementById('detail').showModal();
-        }
+        filtered.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'prompt-card rounded-3xl p-6 flex flex-col justify-between';
+            card.innerHTML = `
+                <div>
+                    <span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full uppercase border border-sky-500/20">${p.cat}</span>
+                    <h3 class="text-xl font-bold mt-4 mb-2">${p.title}</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">${p.description}</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openDetail('${p.id}')" class="flex-grow bg-slate-800 hover:bg-slate-700 text-sm font-semibold py-2.5 rounded-xl transition">Detail</button>
+                    <button onclick="quickCopy(event, \`${p.body.replace(/`/g, "\\`")}\`)" class="px-4 py-2.5 bg-sky-500/10 hover:bg-sky-500 text-sky-400 rounded-xl transition">
+                        📋
+                    </button>
+                </div>
+            `;
+            gallery.appendChild(card);
+        });
+    }
 
-        function quickCopy(e, text) {
-            navigator.clipboard.writeText(text);
-            const btn = e.currentTarget;
-            btn.innerText = '✅';
-            setTimeout(() => btn.innerText = '📋', 1500);
-        }
+    function openDetail(id) {
+        const p = allPrompts.find(x => x.id === id);
+        document.getElementById('d-title').textContent = p.title;
+        document.getElementById('d-cat').textContent = p.cat;
+        document.getElementById('d-desc').textContent = p.description;
+        document.getElementById('d-text').value = p.body;
+        detail.showModal();
+    }
 
-        function copyFromModal() {
-            navigator.clipboard.writeText(document.getElementById('d-text').value);
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = 'Tersalin!';
-            setTimeout(() => btn.innerText = 'Copy Prompt', 1500);
-        }
+    function quickCopy(e, text) {
+        navigator.clipboard.writeText(text);
+        const btn = e.currentTarget;
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅';
+        btn.classList.add('bg-sky-500', 'text-slate-900');
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('bg-sky-500', 'text-slate-900');
+        }, 2000);
+    }
 
-        document.getElementById('search').oninput = render;
-        document.getElementById('filter').onchange = render;
-        fetchPrompts();
-    </script>
-</body>
-</html>
+    function copyFromModal() {
+        const txt = document.getElementById('d-text');
+        navigator.clipboard.writeText(txt.value);
+        const btn = document.getElementById('copyBtn');
+        const original = btn.innerText;
+        btn.innerText = '✅ Tersalin!';
+        btn.style.background = '#22c55e';
+        setTimeout(() => {
+            btn.innerText = original;
+            btn.style.background = '';
+        }, 2000);
+    }
+
+    // Listener Real-time (Otomatis Update tanpa Refresh jika data di Supabase berubah)
+    const mySubscription = supabase
+        .channel('public:prompts')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'prompts' }, payload => {
+            fetchPrompts(); // Refresh data jika ada perubahan di DB
+        })
+        .subscribe();
+
+    search.oninput = () => render(allPrompts);
+    filter.onchange = () => render(allPrompts);
+    
+    // Inisialisasi Ambil Data
+    fetchPrompts();
+</script>
